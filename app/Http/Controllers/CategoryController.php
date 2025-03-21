@@ -29,11 +29,19 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        Category::create([
-            'name' => $request->name
-        ]);
+        try {
+            Category::create([
+                'name' => $request->name
+            ]);
 
-        return redirect()->route('categories.index');
+            session()->flash('success', 'Category created successfully');
+    
+            return redirect()->route('categories.index');
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred while creating the category');
+
+            return redirect()->route('categories.index');
+        }
     }
 
     /**
@@ -57,11 +65,19 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $category->name = $request->name;
+        try {
+            $category->name = $request->name;
 
-        $category->save();
+            $category->save();
 
-        return redirect()->route('categories.index');
+            session()->flash('success', 'Category updated successfully');
+
+            return redirect()->route('categories.index');
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred while updating the category');
+
+            return redirect()->route('categories.index');
+        }
     }
 
     /**
@@ -69,8 +85,16 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
+        try {
+            $category->delete();
 
-        return redirect()->route('categories.index');
+            session()->flash('success', 'Category deleted successfully');
+
+            return redirect()->route('categories.index');
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred while updating the category');
+
+            return redirect()->route('categories.index');
+        }
     }
 }

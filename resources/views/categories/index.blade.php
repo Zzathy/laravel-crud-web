@@ -5,6 +5,12 @@
 @section('heading', 'Category')
 
 @section('content')
+    @if (session('success'))
+        <span style="color:green">{{ session('success') }}</span>
+    @else
+    <span style="color:red">{{ session('error') }}</span>
+    @endif
+
     <a href="{{ route('categories.create') }}">Create Category</a>
 
     <table>
