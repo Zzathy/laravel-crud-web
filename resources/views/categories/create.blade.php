@@ -7,8 +7,20 @@
 @section('content')
     <form action="{{ route('categories.store') }}" method="post">
         @csrf
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name">
-        <button type="submit">Create</button>
+        <div class="">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" class="@error('name')
+                is-invalid
+            @enderror">
+    
+            @error('name')
+                <span style="color: red">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div class="">
+            <button type="submit">Create</button>
+        </div>
+
     </form>
 @endsection
