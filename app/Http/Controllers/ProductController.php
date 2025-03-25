@@ -13,7 +13,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return view('products.index', ['products' => Product::all()]);
     }
 
     /**
@@ -21,7 +21,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -29,7 +29,21 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        try {
+            Product::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'price' => $request->price
+            ]);
+
+            session()->flash('success', 'Product created successfully');
+
+            return redirect()->route('products.index');
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred while creating the product');
+
+            return redirect()->route('products.index');
+        }
     }
 
     /**
@@ -45,7 +59,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('products.edit', ['product' => $product]);
     }
 
     /**
@@ -53,7 +67,21 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        try {
+            $product->name = $request->name;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            
+            $product->save();
+
+            session()->flash('success', 'Product updated successfully');
+
+            return redirect()->route('products.index');
+        } catch (\Exception $e) {
+
+            session()->flash('error', 'An error occurred while updating the product');
+            return redirect()->route('products.index');
+        }
     }
 
     /**
@@ -61,6 +89,16 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        try {
+            $product->delete();
+
+            session()->flash('success', 'Product deleted successfully');
+
+            return redirect()->route('products.index');
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred while deleting the product');
+
+            return redirect()->route('products.index');
+        }
     }
 }
