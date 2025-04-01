@@ -41,6 +41,21 @@
         </div>
 
         <div class="">
+            <label for="category_id">Category</label>
+            <select name="category_id" id="category_id" class="@error('category_id')
+                is-invalid
+            @enderror">
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+
+            @error('category_id')
+                <span style="color: red">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div class="">
             <button type="submit">Create</button>
         </div>
 
