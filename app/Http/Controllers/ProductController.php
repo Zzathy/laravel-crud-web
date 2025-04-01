@@ -9,6 +9,12 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
+    protected $categories;
+
+    public function __construct()
+    {
+        $this->categories = Category::select('id', 'name')->orderBy('name')->get();
+    }
     /**
      * Display a listing of the resource.
      */
@@ -22,7 +28,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create', ['categories' => Category::all()]);
+        return view('products.create', ['categories' => $this->categories]);
     }
 
     /**
@@ -61,7 +67,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('products.edit', ['product' => $product, 'categories' => Category::all()]);
+        return view('products.edit', ['product' => $product, 'categories' => $this->categories]);
     }
 
     /**
