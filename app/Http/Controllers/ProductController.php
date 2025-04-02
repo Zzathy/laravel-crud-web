@@ -4,10 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Category;
 use App\Models\Product;
 
 class ProductController extends Controller
 {
+    protected $categories;
+
+    public function __construct()
+    {
+        $this->categories = Category::select('id', 'name')->orderBy('name')->get();
+    }
     /**
      * Display a listing of the resource.
      */
@@ -21,7 +28,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        return view('products.create', ['categories' => $this->categories]);
     }
 
     /**
@@ -33,7 +40,8 @@ class ProductController extends Controller
             Product::create([
                 'name' => $request->name,
                 'description' => $request->description,
-                'price' => $request->price
+                'price' => $request->price,
+                'category_id' => $request->category_id
             ]);
 
             session()->flash('success', 'Product created successfully');
@@ -59,7 +67,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('products.edit', ['product' => $product]);
+        return view('products.edit', ['product' => $product, 'categories' => $this->categories]);
     }
 
     /**
@@ -71,7 +79,7 @@ class ProductController extends Controller
             $product->name = $request->name;
             $product->description = $request->description;
             $product->price = $request->price;
-            
+            $product->category_id = $request->category_id;            
             $product->save();
 
             session()->flash('success', 'Product updated successfully');
