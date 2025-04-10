@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreLoginRequest;
-use App\Http\Requests\UpdateLoginRequest;
+use App\Http\Requests\LoginRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -22,15 +23,23 @@ class LoginController extends Controller
      */
     public function create()
     {
-        //
+        return view('auth.login');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLoginRequest $request)
+    public function store(LoginRequest $request)
     {
-        //
+        if (Auth::attempt($request->validated())) {
+            $request->session()->regenerate();
+
+            return redirect()->intended(route('index', absolute: false));
+        } else {
+            session()->flash('error', 'An error occurred while logging in');
+
+            return redirect()->route('login');
+        }
     }
 
     /**
@@ -52,7 +61,7 @@ class LoginController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateLoginRequest $request, User $user)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -60,8 +69,14 @@ class LoginController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Request $request)
     {
-        //
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect(route('login'));
     }
 }

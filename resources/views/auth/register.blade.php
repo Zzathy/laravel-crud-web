@@ -1,4 +1,4 @@
-@extends('layout.base')
+@extends('layout.base_auth')
 
 @section('title', 'Register')
 

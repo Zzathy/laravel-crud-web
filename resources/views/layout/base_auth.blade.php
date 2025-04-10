@@ -7,11 +7,6 @@
     <title>Laravel CRUD WEB | @yield('title')</title>
 </head>
 <body>
-    <p>User: {{ Auth::user()->name }}</p>
-    <form action="{{ route('logout') }}" method="post">
-        @csrf
-        <button type="submit">Logout</button>
-    </form>
     <h1>@yield('heading')</h1>
     
     @yield('content')
