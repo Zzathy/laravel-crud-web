@@ -33,14 +33,10 @@ class CategoryController extends Controller
             Category::create([
                 'name' => $request->name
             ]);
-
-            session()->flash('success', 'Category created successfully');
     
-            return redirect()->route('categories.index');
+            return redirect()->route('categories.index')->with('success', 'Category created successfully');
         } catch (\Exception $e) {
-            session()->flash('error', 'An error occurred while creating the category');
-
-            return redirect()->route('categories.index');
+            return redirect()->route('categories.index')->with('error', 'An error occurred while creating the category');
         }
     }
 
@@ -70,13 +66,9 @@ class CategoryController extends Controller
 
             $category->save();
 
-            session()->flash('success', 'Category updated successfully');
-
-            return redirect()->route('categories.index');
+            return redirect()->route('categories.index')->with('success', 'Category updated successfully');
         } catch (\Exception $e) {
-            session()->flash('error', 'An error occurred while updating the category');
-
-            return redirect()->route('categories.index');
+            return redirect()->route('categories.index')->with('error', 'An error occurred while updating the category');
         }
     }
 
@@ -88,13 +80,9 @@ class CategoryController extends Controller
         try {
             $category->delete();
 
-            session()->flash('success', 'Category deleted successfully');
-
-            return redirect()->route('categories.index');
+            return redirect()->route('categories.index')->with('success', 'Category deleted successfully');
         } catch (\Exception $e) {
-            session()->flash('error', 'An error occurred while updating the category');
-
-            return redirect()->route('categories.index');
+            return redirect()->route('categories.index')->with('error', 'An error occurred while deleting the category');
         }
     }
 }

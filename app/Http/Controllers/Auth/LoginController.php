@@ -36,9 +36,7 @@ class LoginController extends Controller
 
             return redirect()->intended(route('index', absolute: false));
         } else {
-            session()->flash('error', 'An error occurred while logging in');
-
-            return redirect()->route('login');
+            return redirect()->route('login')->with('error', 'An error occurred while logging in');
         }
     }
 

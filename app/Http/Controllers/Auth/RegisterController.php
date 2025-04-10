@@ -37,11 +37,9 @@ class RegisterController extends Controller
                 'password' => $request->password
             ]);
 
-            return redirect()->route('login');
+            return redirect()->route('login')->with('success', 'Register successfully');
         } catch (\Exception $e) {
-            session()->flash('error', 'An error occurred while registering');
-
-            return redirect()->route('register');
+            return redirect()->route('register')->with('error', 'An error occurred while registering');
         }
     }
 

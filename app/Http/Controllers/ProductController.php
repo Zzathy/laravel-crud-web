@@ -44,13 +44,9 @@ class ProductController extends Controller
                 'category_id' => $request->category_id
             ]);
 
-            session()->flash('success', 'Product created successfully');
-
-            return redirect()->route('products.index');
+            return redirect()->route('products.index')->with('success', 'Product created successfully');
         } catch (\Exception $e) {
-            session()->flash('error', 'An error occurred while creating the product');
-
-            return redirect()->route('products.index');
+            return redirect()->route('products.index')->with('error', 'An error occurred while creating the product');
         }
     }
 
@@ -82,13 +78,9 @@ class ProductController extends Controller
             $product->category_id = $request->category_id;            
             $product->save();
 
-            session()->flash('success', 'Product updated successfully');
-
-            return redirect()->route('products.index');
+            return redirect()->route('products.index')->with('success', 'Product updated successfully');
         } catch (\Exception $e) {
-
-            session()->flash('error', 'An error occurred while updating the product');
-            return redirect()->route('products.index');
+            return redirect()->route('products.index')->with('error', 'An error occurred while updating the product');
         }
     }
 
@@ -100,13 +92,9 @@ class ProductController extends Controller
         try {
             $product->delete();
 
-            session()->flash('success', 'Product deleted successfully');
-
-            return redirect()->route('products.index');
+            return redirect()->route('products.index')->with('success', 'Product deleted successfully');
         } catch (\Exception $e) {
-            session()->flash('error', 'An error occurred while deleting the product');
-
-            return redirect()->route('products.index');
+            return redirect()->route('products.index')->with('error', 'An error occurred while deleting the product');
         }
     }
 }
