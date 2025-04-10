@@ -22,7 +22,7 @@ class RegisterController extends Controller
      */
     public function create()
     {
-        //
+        return view('auth.register');
     }
 
     /**
@@ -30,7 +30,19 @@ class RegisterController extends Controller
      */
     public function store(StoreRegisterRequest $request)
     {
-        //
+        try {
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => $request->password
+            ]);
+
+            return redirect()->route('login');
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred while registering');
+
+            return redirect()->route('register');
+        }
     }
 
     /**
