@@ -35,4 +35,6 @@
             </tr>
         @endforeach
     </table>
+    
+    {{ $categories->links() }}
 @endsection
