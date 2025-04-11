@@ -12,6 +12,13 @@
         @csrf
         <button type="submit">Logout</button>
     </form>
+
+    <a href="{{ route('index') }}">Index</a>
+    <span>|</span>
+    <a href="{{ route('categories.index') }}">Category</a>
+    <span>|</span>
+    <a href="{{ route('products.index') }}">Product</a>
+
     <h1>@yield('heading')</h1>
     
     @yield('content')
