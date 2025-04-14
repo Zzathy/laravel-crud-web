@@ -9,9 +9,7 @@
         @csrf
         <div class="">
             <label for="name">Name</label>
-            <input type="text" name="name" id="name" class="@error('name')
-                is-invalid
-            @enderror">
+            <input type="text" name="name" id="name">
     
             @error('name')
                 <span style="color: red">{{ $message }}</span>
