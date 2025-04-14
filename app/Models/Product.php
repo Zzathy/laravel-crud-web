@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Product extends Model
 {
     /** @use HasFactory<\Database\Factories\ProductFactory> */
-    protected $fillable = ['name', 'description', 'price', 'category_id'];
+    protected $fillable = ['name', 'category_id', 'description', 'price', 'image'];
     use HasFactory;
     use HasUlids;
 

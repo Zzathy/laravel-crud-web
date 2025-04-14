@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories');
             $table->text('description')->nullable();
             $table->integer('price');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

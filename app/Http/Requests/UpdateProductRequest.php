@@ -23,9 +23,10 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
             'price' => 'required|integer',
-            'category_id' => 'required|exists:categories,id'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg'
         ];
     }
 }

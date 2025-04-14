@@ -5,7 +5,7 @@
 @section('heading', 'Edit Product')
 
 @section('content')
-    <form action="{{ route('products.update', $product->id) }}" method="post">
+    <form action="{{ route('products.update', $product->id) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="">
@@ -16,6 +16,21 @@
 
             @error('name')
                 <span style="color:red">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div class="">
+            <label for="category_id">Category</label>
+            <select name="category_id" id="category_id" class="@error('category_id')
+                is-invalid
+            @enderror">
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" {{ $category->id == $product->category_id ? 'selected' : '' }}>{{ $category->name }}</option>
+                @endforeach
+            </select>
+
+            @error('category_id')
+                <span style="color: red">{{ $message }}</span>
             @enderror
         </div>
 
@@ -42,16 +57,14 @@
         </div>
 
         <div class="">
-            <label for="category_id">Category</label>
-            <select name="category_id" id="category_id" class="@error('category_id')
-                is-invalid
-            @enderror">
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}" {{ $category->id == $product->category_id ? 'selected' : '' }}>{{ $category->name }}</option>
-                @endforeach
-            </select>
+            <label for="image">Image</label>
+            <input type="file" name="image" id="image" accept="image/*" width="250">
 
-            @error('category_id')
+            @if ($product->image)
+                <img src="{{ asset('storage/images/' . $product->image) }}" alt="image">
+            @endif
+
+            @error('image')
                 <span style="color: red">{{ $message }}</span>
             @enderror
         </div>

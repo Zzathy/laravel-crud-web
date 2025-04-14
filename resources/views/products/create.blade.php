@@ -5,7 +5,7 @@
 @section('heading', 'Create Product')
 
 @section('content')
-    <form action="{{ route('products.store') }}" method="post">
+    <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="">
             <label for="name">Name</label>
@@ -14,6 +14,21 @@
             @enderror">
 
             @error('name')
+                <span style="color: red">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div class="">
+            <label for="category_id">Category</label>
+            <select name="category_id" id="category_id" class="@error('category_id')
+                is-invalid
+            @enderror">
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+
+            @error('category_id')
                 <span style="color: red">{{ $message }}</span>
             @enderror
         </div>
@@ -41,16 +56,10 @@
         </div>
 
         <div class="">
-            <label for="category_id">Category</label>
-            <select name="category_id" id="category_id" class="@error('category_id')
-                is-invalid
-            @enderror">
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                @endforeach
-            </select>
+            <label for="image">Image</label>
+            <input type="file" name="image" id="image" accept="image/*">
 
-            @error('category_id')
+            @error('image')
                 <span style="color: red">{{ $message }}</span>
             @enderror
         </div>

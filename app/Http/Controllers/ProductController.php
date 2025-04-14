@@ -6,6 +6,8 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -37,15 +39,25 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         try {
+            $filename = null;
+
+            if ($request->image) {
+                $image = $request->image;
+                $filename = Carbon::now()->format('YmdHis') . '.' . $image->extension();
+                $image->storeAs('images', $filename, 'public');
+            }
+
             Product::create([
                 'name' => $request->name,
+                'category_id' => $request->category_id,
                 'description' => $request->description,
                 'price' => $request->price,
-                'category_id' => $request->category_id
+                'image' => $filename
             ]);
 
             return redirect()->route('products.index')->with('success', 'Product created successfully');
         } catch (\Exception $e) {
+            // dd($e);
             return redirect()->route('products.index')->with('error', 'An error occurred while creating the product');
         }
     }
@@ -72,10 +84,23 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
         try {
+            if ($request->hasFile('image')) {
+                if ($product->image) {
+                    Storage::disk('public')->delete('images/' . $product->image);
+                }
+
+                $image = $request->image;
+                $filename = Carbon::now()->format('YmdHis') . '.' . $image->extension();
+                $image->storeAs('images', $filename, 'public');
+
+                $product->image = $filename;
+            }
+
             $product->name = $request->name;
+            $product->category_id = $request->category_id;            
             $product->description = $request->description;
             $product->price = $request->price;
-            $product->category_id = $request->category_id;            
+            
             $product->save();
 
             return redirect()->route('products.index')->with('success', 'Product updated successfully');
@@ -90,6 +115,10 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         try {
+            if ($product->image) {
+                Storage::disk('public')->delete('images/' . $product->image);
+            }
+            
             $product->delete();
 
             return redirect()->route('products.index')->with('success', 'Product deleted successfully');
