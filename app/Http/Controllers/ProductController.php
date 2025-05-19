@@ -22,7 +22,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('products.index', ['products' => Product::simplePaginate(10)]);
+        return view('products.index', ['products' => Product::with('category')->simplePaginate(10)]);
     }
 
     /**
